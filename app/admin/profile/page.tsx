@@ -25,6 +25,7 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 export default function ProfilePage() {
   const [loading, setLoading] = React.useState(true);
@@ -263,14 +264,17 @@ export default function ProfilePage() {
                 <div className="relative group">
                   <div className="w-32 h-32 rounded-3xl bg-white/5 border-2 border-dashed border-white/20 flex items-center justify-center overflow-hidden mx-auto">
                     {formData.imageUrl || profileImage ? (
-                      <img
+                      <Image
                         src={
                           profileImage
                             ? URL.createObjectURL(profileImage)
                             : formData.imageUrl
                         }
+                        width={128}
+                        height={128}
                         className="w-full h-full object-cover"
                         alt=""
+                        unoptimized
                       />
                     ) : (
                       <ImageIcon className="w-10 h-10 text-muted-foreground" />

@@ -1,27 +1,10 @@
 "use client";
-import dynamic from "next/dynamic";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/section/Hero";
 import { Projects } from "@/components/section/Projects";
-
-const Skills = dynamic(
-  () => import("@/components/section/Skills").then((mod) => mod.Skills),
-  {
-    loading: () => <div className="h-96 w-full animate-pulse bg-muted/20" />,
-  }
-);
-const Contact = dynamic(
-  () => import("@/components/section/Contact").then((mod) => mod.Contact),
-  {
-    loading: () => <div className="h-96 w-full animate-pulse bg-muted/20" />,
-  }
-);
-const Footer = dynamic(
-  () => import("@/components/Footer").then((mod) => mod.Footer),
-  {
-    loading: () => <div className="h-20 w-full animate-pulse bg-muted/20" />,
-  }
-);
+import { Skills } from "@/components/section/Skills";
+import { Contact } from "@/components/section/Contact";
+import { Footer } from "@/components/Footer";
 
 import { Button } from "@/components/ui/button";
 

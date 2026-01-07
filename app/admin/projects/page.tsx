@@ -43,6 +43,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Swal from "sweetalert2";
 import { Switch } from "@/components/ui/switch";
+import Image from "next/image";
 
 export default function ProjectsPage() {
   const [thumbnail, setThumbnail] = React.useState<File>();
@@ -656,10 +657,13 @@ export default function ProjectsPage() {
                               </span>
                             </div>
                           ) : (
-                            <img
+                            <Image
                               src={project.imageUrl}
                               alt={project.title}
+                              width={128}
+                              height={128}
                               className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                              unoptimized
                             />
                           )}
                           <a
@@ -715,9 +719,13 @@ export default function ProjectsPage() {
                                       <Video className="w-4 h-4" />
                                     </div>
                                   ) : (
-                                    <img
+                                    <Image
                                       src={url}
+                                      alt={project.title}
+                                      width={128}
+                                      height={128}
                                       className="h-full w-full object-cover"
+                                      unoptimized
                                     />
                                   )}
                                 </div>
@@ -809,10 +817,13 @@ export default function ProjectsPage() {
                           <Video className="w-8 h-8 text-blue-400" />
                         </div>
                       ) : (
-                        <img
+                        <Image
                           src={project.imageUrl}
                           alt={project.title}
+                          width={128}
+                          height={128}
                           className="w-full h-full object-cover"
+                          unoptimized
                         />
                       )}
                     </div>
