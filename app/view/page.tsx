@@ -9,7 +9,11 @@ const page = async () => {
     getSkills(),
     getProfile(),
   ]);
-  return <HomeView projects={projects} skills={skills} profile={profile} />;
+  return (
+    <div>
+      <HomeView projects={projects} skills={skills} profile={profile} />
+    </div>
+  );
 };
 
 export default page;

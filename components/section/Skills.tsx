@@ -144,7 +144,7 @@ export const Skills = ({ skills }: { skills: any[] }) => {
     <section
       id="skills"
       ref={sectionRef}
-      className="py-32 bg-secondary/30 dark:bg-secondary/10 relative overflow-hidden"
+      className="py-32 bg-secondary/1 dark:bg-secondary/1 relative overflow-hidden"
     >
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -z-10 animate-pulse-slow" />

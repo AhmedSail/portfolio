@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import emailjs from "@emailjs/browser";
+import Swal from "sweetalert2";
 
 import { z } from "zod";
 
@@ -76,6 +78,48 @@ export const Contact = ({ profile }: { profile: any | null }) => {
     message?: string;
   }>({});
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        "ahmed",
+        "template_wanyswu",
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: profile?.name || "Ahmed",
+        },
+        "_63K7TVQxU9-re0-m"
+      );
+
+      Swal.fire({
+        title: "Sent Successfully!",
+        text: "Thanks for reaching out. I'll get back to you soon!",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+        background: "var(--card)",
+        color: "var(--foreground)",
+      });
+
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      Swal.fire({
+        title: "Submission Failed",
+        text: "Please try again later or contact me via socials.",
+        icon: "error",
+        confirmButtonColor: "#3b82f6",
+        background: "var(--card)",
+        color: "var(--foreground)",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -97,10 +141,7 @@ export const Contact = ({ profile }: { profile: any | null }) => {
   ].filter((link) => link.href);
 
   return (
-    <section
-      id="contact"
-      className="py-32 relative overflow-hidden bg-background"
-    >
+    <section id="contact" className="py-32 relative overflow-hidden ">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] -z-10" />
@@ -130,7 +171,7 @@ export const Contact = ({ profile }: { profile: any | null }) => {
           {/* Contact Form */}
           <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-[2.5rem] overflow-hidden shadow-xl">
             <CardContent className="p-8 md:p-12">
-              <form className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-3">
                   <Label
                     htmlFor="name"

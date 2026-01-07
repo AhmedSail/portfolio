@@ -23,35 +23,9 @@ export const Hero = ({ profile }: { profile: any | null }) => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden "
     >
       {/* Dynamic Squares Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="grid-background absolute inset-0 opacity-[0.05] dark:opacity-20" />
-        <div className="dot-background absolute inset-0 opacity-[0.03] dark:opacity-10" />
-
-        {/* Floating Decorative Squares */}
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute border rounded-xl opacity-20 dark:opacity-40 ${
-              i % 2 === 0 ? "animate-float" : "animate-float-reverse"
-            } ${
-              i % 3 === 0
-                ? "border-blue-400/50 bg-blue-400/5 shadow-[0_0_15px_rgba(96,165,250,0.3)]"
-                : "border-black/10 dark:border-white/20 bg-black/5 dark:bg-white/5 shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-            }`}
-            style={{
-              width: `${Math.random() * 120 + 40}px`,
-              height: `${Math.random() * 120 + 40}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${i * 1.5}s`,
-              animationDuration: `${Math.random() * 10 + 15}s`,
-            }}
-          />
-        ))}
-      </div>
 
       {/* Gradient Orbs */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow z-0" />
