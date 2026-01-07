@@ -156,6 +156,7 @@ export const Hero = ({ profile }: { profile: any | null }) => {
                   priority
                   sizes="(max-width: 768px) 280px, 400px"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  unoptimized
                 />
               </div>
 

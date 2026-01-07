@@ -68,6 +68,7 @@ export const Projects = ({ projects }: { projects: Project[] }) => {
                     height={400}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 

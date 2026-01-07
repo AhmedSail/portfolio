@@ -111,9 +111,11 @@ export default function ProjectDetailsPage() {
         <Image
           src={project.imageUrl || "/placeholder.jpg"}
           alt={project.title || "Project Image"}
-          fill
-          className="object-cover"
+          width={600}
+          height={400}
+          className="object-cover w-full"
           priority
+          unoptimized
         />
 
         {/* Back Button */}
@@ -239,8 +241,10 @@ export default function ProjectDetailsPage() {
                         alt={`${project.title || "Project"} - Image ${
                           index + 1
                         }`}
-                        fill
+                        width={600}
+                        height={400}
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        unoptimized
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                         <ExternalLink className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -331,8 +335,10 @@ export default function ProjectDetailsPage() {
             <Image
               src={selectedImage}
               alt="Full size"
-              fill
+              width={600}
+              height={400}
               className="object-contain"
+              unoptimized
             />
           </div>
 
