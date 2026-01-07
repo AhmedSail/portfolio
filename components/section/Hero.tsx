@@ -73,10 +73,10 @@ export const Hero = ({ profile }: { profile: any | null }) => {
 
             {/* Name with gradient */}
             <h1
-              className="text-5xl sm:text-6xl md:text-8xl font-black mb-6 animate-fade-in tracking-tighter leading-tight"
+              className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-6 animate-fade-in tracking-tighter leading-tight"
               style={{ animationDelay: "0.1s" }}
             >
-              Hi, I me <br />
+              Hi, I'm <br />
               <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-blue-300 dark:to-white">
                 {name}
               </span>
@@ -84,17 +84,17 @@ export const Hero = ({ profile }: { profile: any | null }) => {
 
             {/* Title */}
             <div
-              className="mb-8 animate-fade-in"
+              className="mb-6 sm:mb-8 animate-fade-in"
               style={{ animationDelay: "0.2s" }}
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-muted-foreground tracking-tight">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-muted-foreground tracking-tight">
                 {title}
               </h2>
             </div>
 
             {/* Bio */}
             <p
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 animate-fade-in leading-relaxed font-medium opacity-80"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8 sm:mb-10 animate-fade-in leading-relaxed font-medium opacity-80"
               style={{ animationDelay: "0.3s" }}
             >
               {bio}
@@ -102,12 +102,12 @@ export const Hero = ({ profile }: { profile: any | null }) => {
 
             {/* CTA Buttons */}
             <div
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12 animate-fade-in"
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12 animate-fade-in w-full sm:w-auto"
               style={{ animationDelay: "0.4s" }}
             >
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-500/20 rounded-2xl px-10 h-16 text-lg font-bold transition-all hover:scale-105 active:scale-95"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-500/20 rounded-2xl px-10 h-16 text-lg font-bold transition-all hover:scale-105 active:scale-95"
                 onClick={scrollToProjects}
               >
                 View My Work
@@ -115,7 +115,7 @@ export const Hero = ({ profile }: { profile: any | null }) => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 px-10 h-16 text-lg font-bold rounded-2xl backdrop-blur-sm transition-all hover:border-blue-500/50"
+                className="w-full sm:w-auto border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 px-10 h-16 text-lg font-bold rounded-2xl backdrop-blur-sm transition-all hover:border-blue-500/50"
                 onClick={scrollToContact}
               >
                 Get In Touch

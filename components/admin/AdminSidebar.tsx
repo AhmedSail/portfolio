@@ -27,7 +27,7 @@ const menuItems = [
   { name: "Settings", icon: Settings, href: "/admin/settings" },
 ];
 
-export const AdminSidebar = () => {
+export const AdminSidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(true);
 
@@ -47,7 +47,12 @@ export const AdminSidebar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col z-50">
+    <aside
+      className={cn(
+        "bg-card border-r border-border flex flex-col z-50",
+        className
+      )}
+    >
       <div className="p-6">
         <Link href="/admin" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">

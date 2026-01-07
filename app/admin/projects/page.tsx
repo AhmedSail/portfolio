@@ -290,8 +290,8 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="p-8 space-y-8 bg-background/50 min-h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="p-4 md:p-8 space-y-8 bg-background/50 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-1">
           <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-white">
             Project Management
@@ -585,7 +585,7 @@ export default function ProjectsPage() {
         </Dialog>
       </div>
 
-      <Card className="border-none shadow-2xl shadow-blue-500/5 overflow-hidden bg-card/40 backdrop-blur-md rounded-3xl border border-white/5">
+      <Card className="border-none shadow-2xl shadow-blue-500/5 overflow-hidden bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl border border-white/5">
         <CardHeader className="bg-white/5 border-b border-white/5 p-6">
           <CardTitle className="text-2xl font-bold flex items-center gap-3">
             <Layout className="w-6 h-6 text-blue-400" />
@@ -593,7 +593,8 @@ export default function ProjectsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden lg:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-white/5 border-b">
@@ -787,6 +788,109 @@ export default function ProjectsPage() {
                 )}
               </TableBody>
             </Table>
+          </div>
+
+          {/* Mobile Cards View */}
+          <div className="lg:hidden p-4 space-y-4">
+            {projectsList.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                No projects found.
+              </div>
+            ) : (
+              projectsList.map((project) => (
+                <Card
+                  key={project.id}
+                  className="bg-white/5 border-white/5 rounded-2xl overflow-hidden p-4 space-y-4"
+                >
+                  <div className="flex gap-4">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-black/20 flex-shrink-0">
+                      {isVideo(project.imageUrl) ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Video className="w-8 h-8 text-blue-400" />
+                        </div>
+                      ) : (
+                        <img
+                          src={project.imageUrl}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-lg">{project.title}</h3>
+                        {project.featured && (
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {project.tags
+                          ?.split(",")
+                          .slice(0, 3)
+                          .map((tag: string, i: number) => (
+                            <span
+                              key={i}
+                              className="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/10"
+                            >
+                              {tag.trim()}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                    <div className="flex gap-2">
+                      {project.liveUrl && (
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="w-8 h-8 hover:bg-blue-500/10"
+                          asChild
+                        >
+                          <a href={project.liveUrl} target="_blank">
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {project.githubUrl && (
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="w-8 h-8 hover:bg-white/10"
+                          asChild
+                        >
+                          <a href={project.githubUrl} target="_blank">
+                            <Github className="w-4 h-4" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="w-9 h-9 text-blue-400 hover:bg-blue-500/10"
+                        onClick={() => handleEdit(project)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="w-9 h-9 text-red-500 hover:bg-red-500/10"
+                        onClick={() => handleDelete(project)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

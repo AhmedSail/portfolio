@@ -134,9 +134,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="p-8 space-y-8 bg-background/50 min-h-screen">
+    <div className="p-4 md:p-8 space-y-8 bg-background/50 min-h-screen">
       <div className="space-y-1">
-        <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-white">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-white">
           Personal Information
         </h1>
         <p className="text-muted-foreground text-lg">
@@ -149,7 +149,7 @@ export default function ProfilePage() {
         className="grid grid-cols-1 lg:grid-cols-3 gap-8"
       >
         {/* Basic Info */}
-        <Card className="lg:col-span-2 border-white/5 bg-card/40 backdrop-blur-md rounded-3xl overflow-hidden">
+        <Card className="lg:col-span-2 border-white/5 bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl overflow-hidden">
           <CardHeader className="bg-white/5 border-b border-white/5">
             <CardTitle className="flex items-center gap-2">
               <User className="w-5 h-5 text-blue-400" />
@@ -248,7 +248,7 @@ export default function ProfilePage() {
 
         {/* Media & Resume */}
         <div className="space-y-8">
-          <Card className="border-white/5 bg-card/40 backdrop-blur-md rounded-3xl overflow-hidden">
+          <Card className="border-white/5 bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl overflow-hidden">
             <CardHeader className="bg-white/5 border-b border-white/5">
               <CardTitle className="flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-blue-400" />
@@ -341,7 +341,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Social Links */}
-        <Card className="lg:col-span-3 border-white/5 bg-card/40 backdrop-blur-md rounded-3xl overflow-hidden">
+        <Card className="lg:col-span-3 border-white/5 bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl overflow-hidden">
           <CardHeader className="bg-white/5 border-b border-white/5">
             <CardTitle className="flex items-center gap-2">
               <Globe className="w-5 h-5 text-blue-400" />

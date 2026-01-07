@@ -277,7 +277,7 @@ export default function SkillsPage() {
   };
 
   return (
-    <div className="p-8 space-y-8 bg-background/50 min-h-screen">
+    <div className="p-4 md:p-8 space-y-8 bg-background/50 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-2">
         <div className="space-y-3">
           <div className="flex items-center gap-3">
@@ -382,7 +382,7 @@ export default function SkillsPage() {
                   defaultValue="Frontend Frameworks"
                   className="w-full mt-4"
                 >
-                  <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-3 top-10 z-10">
+                  <TabsList className="flex flex-wrap h-auto w-full gap-2 bg-transparent border-none">
                     {Object.keys(popularIcons).map((category) => (
                       <TabsTrigger
                         key={category}
@@ -515,7 +515,7 @@ export default function SkillsPage() {
         </Dialog>
       </div>
 
-      <Card className="border-none shadow-2xl overflow-hidden bg-card/40 backdrop-blur-md rounded-3xl border border-white/5">
+      <Card className="border-none shadow-2xl overflow-hidden bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl border border-white/5">
         <CardHeader className="bg-white/5 border-b border-white/5 p-6">
           <CardTitle className="text-2xl font-bold flex items-center gap-3">
             <Cpu className="w-6 h-6 text-blue-400" />
@@ -523,7 +523,8 @@ export default function SkillsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden lg:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent border-white/5">
@@ -601,6 +602,70 @@ export default function SkillsPage() {
                 )}
               </TableBody>
             </Table>
+          </div>
+
+          {/* Mobile Cards View */}
+          <div className="lg:hidden p-4 space-y-4">
+            {skillsList.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                No skills found.
+              </div>
+            ) : (
+              skillsList.map((skill) => (
+                <Card
+                  key={skill.id}
+                  className="bg-white/5 border-white/5 rounded-2xl p-4 space-y-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 text-blue-400">
+                        <DynamicIcon
+                          name={skill.iconName}
+                          className="w-6 h-6"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg">{skill.name}</h3>
+                        <span className="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-md border border-blue-500/10 uppercase tracking-widest font-black">
+                          {skill.category || "General"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="w-9 h-9 text-blue-400 hover:bg-blue-500/10"
+                        onClick={() => handleEdit(skill)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="w-9 h-9 text-red-500 hover:bg-red-500/10"
+                        onClick={() => handleDelete(skill)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      <span>Proficiency</span>
+                      <span className="text-blue-500">{skill.percentage}%</span>
+                    </div>
+                    <div className="h-2 bg-black/20 rounded-full overflow-hidden p-px border border-white/5">
+                      <div
+                        className="h-full bg-linear-to-r from-blue-600 to-blue-400 rounded-full"
+                        style={{ width: `${skill.percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

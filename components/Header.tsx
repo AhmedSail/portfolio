@@ -146,17 +146,19 @@ export const Header = ({ profile }: { profile: any | null }) => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 mt-3 mx-6 p-4 rounded-3xl bg-background/95 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={() => scrollToSection(link.href)}
-                  className="w-full text-left px-6 py-4 rounded-2xl text-lg font-black text-muted-foreground hover:text-blue-600 dark:hover:text-white hover:bg-blue-50/50 dark:hover:bg-blue-600 transition-all uppercase tracking-widest"
-                >
-                  {link.name}
-                </button>
-              ))}
+          <div className="md:hidden absolute top-full left-0 right-0 px-6 mt-3 animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="p-4 rounded-3xl bg-background/95 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-2xl">
+              <div className="flex flex-col gap-2">
+                {navLinks.map((link) => (
+                  <button
+                    key={link.name}
+                    onClick={() => scrollToSection(link.href)}
+                    className="w-full text-left px-6 py-4 rounded-2xl text-lg font-black text-muted-foreground hover:text-blue-600 dark:hover:text-white hover:bg-blue-50/50 dark:hover:bg-blue-600/20 transition-all uppercase tracking-widest"
+                  >
+                    {link.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
