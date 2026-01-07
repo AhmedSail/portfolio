@@ -204,7 +204,7 @@ export const Contact = ({ profile }: { profile: any | null }) => {
 
           {/* Contact Info */}
           <div className="flex flex-col gap-8">
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-1 gap-6">
               {/* Email Card */}
               <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-4xl hover:bg-blue-500/5 transition-all group shadow-xl">
                 <CardContent className="p-8">
@@ -224,19 +224,6 @@ export const Contact = ({ profile }: { profile: any | null }) => {
               </Card>
 
               {/* Location Card */}
-              <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-4xl hover:bg-blue-500/5 transition-all group shadow-xl">
-                <CardContent className="p-8">
-                  <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center mb-6 border border-black/10 dark:border-white/20 group-hover:scale-110 transition-transform">
-                    <MapPin className="w-7 h-7 text-foreground" />
-                  </div>
-                  <h3 className="text-sm font-black text-muted-foreground uppercase tracking-widest mb-2">
-                    Location
-                  </h3>
-                  <p className="text-xl font-black">
-                    {profile?.address || "Available Worldwide"}
-                  </p>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Socials Grid */}

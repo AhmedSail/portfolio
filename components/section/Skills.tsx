@@ -1,16 +1,91 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import * as Icons from "lucide-react";
-import * as ReactIcons from "react-icons/ri";
-import * as FaIcons from "react-icons/fa";
-import * as Fa6Icons from "react-icons/fa6";
-import * as ImIcons from "react-icons/im";
-import * as SiIcons from "react-icons/si";
-import { Code2, Server, Wrench, HelpCircle } from "lucide-react";
+// Import only needed category icons
+import {
+  Code2,
+  Server,
+  Wrench,
+  HelpCircle,
+  Layout,
+  Database,
+  Cpu,
+  Globe,
+  Terminal,
+  Layers,
+  Container,
+  Cloud,
+  Box,
+  Infinity,
+  Smartphone,
+} from "lucide-react";
+import {
+  RiReactjsLine,
+  RiNodejsLine,
+  RiJavascriptLine,
+  RiHtml5Line,
+  RiCss3Line,
+  RiGithubFill,
+  RiDatabaseLine,
+} from "react-icons/ri";
+import {
+  SiTailwindcss,
+  SiNextdotjs,
+  SiTypescript,
+  SiPostgresql,
+  SiPrisma,
+  SiDocker,
+  SiFramer,
+  SiVite,
+  SiRedux,
+  SiGraphql,
+  SiFirebase,
+  SiSupabase,
+} from "react-icons/si";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Helper component to render icons from multiple libraries
+// Mapping a select set of popular tech icons to avoid importing entire libraries
+// This significantly improves performance
+const TECH_ICONS: Record<string, any> = {
+  // Lucide (Defaults)
+  Code2,
+  Server,
+  Wrench,
+  HelpCircle,
+  Layout,
+  Database,
+  Cpu,
+  Globe,
+  Terminal,
+  Layers,
+  Container,
+  Cloud,
+  Box,
+  Infinity,
+  Smartphone,
+  // Tech specific
+  React: RiReactjsLine,
+  Node: RiNodejsLine,
+  JS: RiJavascriptLine,
+  HTML: RiHtml5Line,
+  CSS: RiCss3Line,
+  Tailwind: SiTailwindcss,
+  NextJS: SiNextdotjs,
+  TS: SiTypescript,
+  PostgreSQL: SiPostgresql,
+  Prisma: SiPrisma,
+  Docker: SiDocker,
+  Framer: SiFramer,
+  Vite: SiVite,
+  Redux: SiRedux,
+  GraphQL: SiGraphql,
+  Firebase: SiFirebase,
+  Supabase: SiSupabase,
+  GitHub: RiGithubFill,
+  SQL: RiDatabaseLine,
+};
+
+// Helper component to render icons efficiently
 const DynamicIcon = ({
   name,
   className,
@@ -18,22 +93,9 @@ const DynamicIcon = ({
   name: string;
   className?: string;
 }) => {
-  // Check if it's a React Icon (format: "react:IconName")
-  if (name?.startsWith("react:")) {
-    const iconName = name.replace("react:", "");
-    const Icon =
-      (ReactIcons as any)[iconName] ||
-      (FaIcons as any)[iconName] ||
-      (Fa6Icons as any)[iconName] ||
-      (ImIcons as any)[iconName] ||
-      (SiIcons as any)[iconName];
-    if (Icon) return <Icon className={className} />;
-  }
-
-  // Default to Lucide icons
-  const Icon = (Icons as any)[name];
-  if (!Icon) return <HelpCircle className={className} />;
-  return <Icon className={className} />;
+  // Check if it's in our mapping
+  const Icon = TECH_ICONS[name] || HelpCircle;
+  return <Icon className={className || "w-5 h-5"} />;
 };
 
 export const Skills = ({ skills }: { skills: any[] }) => {

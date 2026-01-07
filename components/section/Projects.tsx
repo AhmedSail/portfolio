@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ExternalLink, Github, Folder, Eye, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,12 +58,14 @@ export const Projects = ({ projects }: { projects: Project[] }) => {
               >
                 {/* Project Image */}
                 <div className="relative overflow-hidden aspect-video">
-                  <img
+                  <Image
                     src={
                       project.imageUrl ||
                       "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop"
                     }
                     alt={project.title}
+                    width={600}
+                    height={400}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />

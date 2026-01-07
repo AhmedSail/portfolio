@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -80,7 +81,16 @@ export const Header = ({ profile }: { profile: any | null }) => {
               {initials[0]}
             </div>
             <span className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-600 dark:from-blue-400 to-blue-400 dark:to-white">
-              {profile?.name?.split(" ")[0] || "Ahmed"}
+              {isDark ? (
+                <Image
+                  src="/logoWhite2.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                />
+              ) : (
+                <Image src="/logo.png" alt="Logo" width={100} height={100} />
+              )}
             </span>
           </a>
 

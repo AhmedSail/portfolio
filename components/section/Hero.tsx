@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -147,9 +148,12 @@ export const Hero = ({ profile }: { profile: any | null }) => {
               {/* Main Image Container */}
               <div className="relative z-10 w-full h-full rounded-[2.5rem] p-1.5 bg-linear-to-b from-blue-400/20 to-transparent dark:from-blue-400/10 backdrop-blur-sm border border-black/5 dark:border-white/10 overflow-hidden shadow-2xl group transition-all duration-700 hover:rounded-[4rem]">
                 <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <img
+                <Image
                   src={imageUrl}
                   alt={name}
+                  width={400}
+                  height={400}
+                  priority
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
               </div>

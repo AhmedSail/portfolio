@@ -1,10 +1,20 @@
 "use client";
-import { Footer } from "@/components/Footer";
+import dynamic from "next/dynamic";
 import { Header } from "@/components/Header";
-import { Contact } from "@/components/section/Contact";
 import { Hero } from "@/components/section/Hero";
-import { Projects } from "@/components/section/Projects";
-import { Skills } from "@/components/section/Skills";
+
+const Projects = dynamic(() =>
+  import("@/components/section/Projects").then((mod) => mod.Projects)
+);
+const Skills = dynamic(() =>
+  import("@/components/section/Skills").then((mod) => mod.Skills)
+);
+const Contact = dynamic(() =>
+  import("@/components/section/Contact").then((mod) => mod.Contact)
+);
+const Footer = dynamic(() =>
+  import("@/components/Footer").then((mod) => mod.Footer)
+);
 
 import { Button } from "@/components/ui/button";
 
