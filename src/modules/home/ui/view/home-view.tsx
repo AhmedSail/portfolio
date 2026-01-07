@@ -2,18 +2,25 @@
 import dynamic from "next/dynamic";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/section/Hero";
+import { Projects } from "@/components/section/Projects";
 
-const Projects = dynamic(() =>
-  import("@/components/section/Projects").then((mod) => mod.Projects)
+const Skills = dynamic(
+  () => import("@/components/section/Skills").then((mod) => mod.Skills),
+  {
+    loading: () => <div className="h-96 w-full animate-pulse bg-muted/20" />,
+  }
 );
-const Skills = dynamic(() =>
-  import("@/components/section/Skills").then((mod) => mod.Skills)
+const Contact = dynamic(
+  () => import("@/components/section/Contact").then((mod) => mod.Contact),
+  {
+    loading: () => <div className="h-96 w-full animate-pulse bg-muted/20" />,
+  }
 );
-const Contact = dynamic(() =>
-  import("@/components/section/Contact").then((mod) => mod.Contact)
-);
-const Footer = dynamic(() =>
-  import("@/components/Footer").then((mod) => mod.Footer)
+const Footer = dynamic(
+  () => import("@/components/Footer").then((mod) => mod.Footer),
+  {
+    loading: () => <div className="h-20 w-full animate-pulse bg-muted/20" />,
+  }
 );
 
 import { Button } from "@/components/ui/button";
