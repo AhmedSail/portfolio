@@ -64,7 +64,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Decorative Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute top-[-11%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse" />
 
       <Card className="w-full max-w-md border-white/5 bg-slate-900/50 backdrop-blur-2xl shadow-2xl rounded-[2.5rem] overflow-hidden relative z-10">
