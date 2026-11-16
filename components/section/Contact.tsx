@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   Mail,
@@ -5,10 +7,10 @@ import {
   Github,
   Linkedin,
   Twitter,
-  Instagram,
-  Facebook,
   FileText,
   MapPin,
+  MessageCircle,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,55 +19,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
-
 import { z } from "zod";
-
-const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required")
-    .max(100, "Name must be less than 100 characters"),
-  email: z
-    .string()
-    .trim()
-    .email("Please enter a valid email")
-    .max(255, "Email must be less than 255 characters"),
-  message: z
-    .string()
-    .trim()
-    .min(1, "Message is required")
-    .max(1000, "Message must be less than 1000 characters"),
-});
-
-const socialLinks = [
-  {
-    name: "GitHub",
-    icon: Github,
-    href: "https://github.com",
-    color: "hover:text-primary",
-  },
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    href: "https://linkedin.com",
-    color: "hover:text-primary",
-  },
-  {
-    name: "Twitter",
-    icon: Twitter,
-    href: "https://twitter.com",
-    color: "hover:text-primary",
-  },
-  {
-    name: "Resume",
-    icon: FileText,
-    href: "/resume.pdf",
-    color: "hover:text-accent",
-  },
-];
+import { useLanguage } from "@/lib/language-context";
 
 export const Contact = ({ profile }: { profile: any | null }) => {
+  const { language, dir, t } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -78,8 +37,75 @@ export const Contact = ({ profile }: { profile: any | null }) => {
     message?: string;
   }>({});
 
+  const professionalEmail =
+    profile?.email && !profile.email.includes("sdew2sdew")
+      ? profile.email
+      : "ahmed.qompoz@gmail.com";
+
+  const cleanLinkedin =
+    profile?.linkedinUrl && profile.linkedinUrl.length > 22
+      ? profile.linkedinUrl
+      : "https://linkedin.com/in/ahmed-qompoz";
+
+  const cleanTwitter = profile?.twitterUrl || "https://x.com/ahmedqompoz";
+  const cleanGithub = profile?.githubUrl || "https://github.com";
+  const whatsappUrl = profile?.whatsappUrl || "https://wa.me/970592855602";
+
+  const socialLinks = [
+    {
+      name: "GitHub",
+      icon: Github,
+      href: cleanGithub,
+    },
+    {
+      name: "LinkedIn",
+      icon: Linkedin,
+      href: cleanLinkedin,
+    },
+    {
+      name: "X (Twitter)",
+      icon: Twitter,
+      href: cleanTwitter,
+    },
+    {
+      name: t("resumeBtn"),
+      icon: FileText,
+      href: profile?.resumeUrl || "/resume.pdf",
+    },
+  ];
+
+  const contactSchema = z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, language === "ar" ? "الاسم مطلوب" : "Name is required")
+      .max(100),
+    email: z
+      .string()
+      .trim()
+      .email(language === "ar" ? "يرجى إدخال بريد إلكتروني صالح" : "Please enter a valid email"),
+    message: z
+      .string()
+      .trim()
+      .min(1, language === "ar" ? "الرسالة مطلوبة" : "Message is required")
+      .max(1000),
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validation = contactSchema.safeParse(formData);
+    if (!validation.success) {
+      const fieldErrors: { [key: string]: string } = {};
+      validation.error.issues.forEach((err) => {
+        if (err.path[0]) {
+          fieldErrors[err.path[0] as string] = err.message;
+        }
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -90,30 +116,32 @@ export const Contact = ({ profile }: { profile: any | null }) => {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
-          to_name: profile?.name || "Ahmed",
+          to_name: profile?.name || "Ahmed Qompoz",
         },
         "_63K7TVQxU9-re0-m"
       );
 
       Swal.fire({
-        title: "Sent Successfully!",
-        text: "Thanks for reaching out. I'll get back to you soon!",
+        title: language === "ar" ? "تم الإرسال بنجاح!" : "Sent Successfully!",
+        text:
+          language === "ar"
+            ? "شكراً لتواصلك، سأقوم بالرد عليك في أقرب وقت ممكن."
+            : "Thanks for reaching out! I'll get back to you shortly.",
         icon: "success",
-        confirmButtonColor: "#3b82f6",
-        background: "var(--card)",
-        color: "var(--foreground)",
+        confirmButtonColor: "#2563eb",
       });
 
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("EmailJS Error:", error);
       Swal.fire({
-        title: "Submission Failed",
-        text: "Please try again later or contact me via socials.",
+        title: language === "ar" ? "تعذر الإرسال" : "Submission Failed",
+        text:
+          language === "ar"
+            ? "يرجى المحاولة لاحقاً أو التواصل مباشرة عبر الواتساب أو البريد."
+            : "Please try again later or contact me directly via WhatsApp or email.",
         icon: "error",
-        confirmButtonColor: "#3b82f6",
-        background: "var(--card)",
-        color: "var(--foreground)",
+        confirmButtonColor: "#2563eb",
       });
     } finally {
       setIsSubmitting(false);
@@ -125,76 +153,62 @@ export const Contact = ({ profile }: { profile: any | null }) => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const socialLinks = [
-    { name: "GitHub", icon: Github, href: profile?.githubUrl },
-    { name: "LinkedIn", icon: Linkedin, href: profile?.linkedinUrl },
-    { name: "Twitter", icon: Twitter, href: profile?.twitterUrl },
-    { name: "Instagram", icon: Instagram, href: profile?.instagramUrl },
-    { name: "Facebook", icon: Facebook, href: profile?.facebookUrl },
-    { name: "Resume", icon: FileText, href: profile?.resumeUrl },
-  ].filter((link) => link.href);
-
   return (
-    <section id="contact" className="py-32 relative overflow-hidden ">
+    <section id="contact" dir={dir} className="py-24 relative overflow-hidden">
       {/* Background accents */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -z-10" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[130px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[130px] -z-10 pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6 backdrop-blur-md">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4 backdrop-blur-md">
             <Mail className="w-4 h-4 text-blue-500" />
             <span className="font-mono text-xs font-bold text-blue-500 uppercase tracking-widest">
-              Contact Me
+              {t("contactBadge")}
             </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
-            Let's Start a{" "}
-            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-blue-600 dark:to-white">
-              Project
+          <h2 className="text-4xl md:text-5xl font-black mb-5 tracking-tight">
+            {t("contactTitle")}{" "}
+            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-indigo-500 dark:from-white dark:to-blue-400">
+              {t("contactTitleHighlight")}
             </span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Ready to bring your ideas to life? Fill out the form below or reach
-            out via socials. I'm always open to new opportunities.
+          <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
+            {t("contactDesc")}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-10 max-w-6xl mx-auto items-start">
           {/* Contact Form */}
-          <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-[2.5rem] overflow-hidden shadow-xl">
-            <CardContent className="p-8 md:p-12">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="space-y-3">
-                  <Label
-                    htmlFor="name"
-                    className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest ml-1"
-                  >
-                    Your Name
+          <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-10 shadow-xl">
+            <CardContent className="p-0">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    {t("formNameLabel")}
                   </Label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Enter your name"
-                    className="h-14 bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 text-base"
+                    placeholder={language === "ar" ? "أحمد محمد" : "John Doe"}
+                    className="h-12 rounded-xl bg-background/50 border-black/10 dark:border-white/10 focus-visible:ring-blue-500"
                   />
+                  {errors.name && (
+                    <p className="text-xs font-semibold text-rose-500">{errors.name}</p>
+                  )}
                 </div>
 
-                <div className="space-y-3">
-                  <Label
-                    htmlFor="email"
-                    className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest ml-1"
-                  >
-                    Email Address
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    {t("formEmailLabel")}
                   </Label>
                   <Input
                     id="email"
@@ -202,107 +216,123 @@ export const Contact = ({ profile }: { profile: any | null }) => {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="name@example.com"
-                    className="h-14 bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 text-base"
+                    placeholder="name@company.com"
+                    className="h-12 rounded-xl bg-background/50 border-black/10 dark:border-white/10 focus-visible:ring-blue-500"
                   />
+                  {errors.email && (
+                    <p className="text-xs font-semibold text-rose-500">{errors.email}</p>
+                  )}
                 </div>
 
-                <div className="space-y-3">
-                  <Label
-                    htmlFor="message"
-                    className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest ml-1"
-                  >
-                    Message
+                <div className="space-y-2">
+                  <Label htmlFor="message" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    {t("formMessageLabel")}
                   </Label>
                   <Textarea
                     id="message"
                     name="message"
+                    rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="What's on your mind?"
-                    rows={6}
-                    className="bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 text-base resize-none"
+                    placeholder={
+                      language === "ar"
+                        ? "أخبرني عن مشروعك أو النظام الذي تود تطويره..."
+                        : "Tell me about your project, platform requirements, or engineering needs..."
+                    }
+                    className="rounded-xl bg-background/50 border-black/10 dark:border-white/10 focus-visible:ring-blue-500 resize-none"
                   />
+                  {errors.message && (
+                    <p className="text-xs font-semibold text-rose-500">{errors.message}</p>
+                  )}
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white text-lg font-bold rounded-2xl shadow-xl shadow-blue-500/20 transition-all hover:scale-[1.02] active:scale-95 group"
+                  className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all"
                 >
                   {isSubmitting ? (
-                    "Sending..."
+                    <span>{t("formSendingBtn")}</span>
                   ) : (
-                    <div className="flex items-center gap-2">
-                      Send Message{" "}
-                      <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform font-black" />
-                    </div>
+                    <span className="flex items-center justify-center gap-2">
+                      <Send className="w-4 h-4" />
+                      {t("formSubmitBtn")}
+                    </span>
                   )}
                 </Button>
               </form>
             </CardContent>
           </Card>
 
-          {/* Contact Info */}
-          <div className="flex flex-col gap-8">
-            <div className="grid sm:grid-cols-1 gap-6">
-              {/* Email Card */}
-              <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-4xl hover:bg-blue-500/5 transition-all group shadow-xl">
-                <CardContent className="p-8">
-                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
-                    <Mail className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h3 className="text-sm font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-2">
-                    Email Me
-                  </h3>
+          {/* Quick Contact & Channels */}
+          <div className="space-y-6">
+            {/* Direct Email Card */}
+            <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl hover:border-blue-500/30 transition-all group">
+              <CardContent className="p-0 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-105 transition-transform shrink-0">
+                  <Mail className="w-6 h-6" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider block mb-1">
+                    {t("emailCardTitle")}
+                  </span>
                   <a
-                    href={`mailto:${profile?.email || "hello@example.com"}`}
-                    className="text-lg font-bold break-all hover:text-blue-500 transition-colors"
+                    href={`mailto:${professionalEmail}`}
+                    className="text-base sm:text-lg font-black text-foreground hover:text-blue-500 transition-colors truncate block"
                   >
-                    {profile?.email || "hello@example.com"}
+                    {professionalEmail}
                   </a>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Location Card */}
-            </div>
+            {/* Direct WhatsApp Call to Action */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/15 hover:border-emerald-500/40 transition-all group shadow-lg"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform shrink-0">
+                  <MessageCircle className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+                    {language === "ar" ? "تواصل مباشر وفوري" : "Instant Messaging"}
+                  </span>
+                  <span className="text-base sm:text-lg font-black text-foreground">
+                    {t("whatsappBtn")}
+                  </span>
+                </div>
+              </div>
+              <Sparkles className="w-5 h-5 text-emerald-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+            </a>
 
-            {/* Socials Grid */}
-            <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/5 backdrop-blur-xl rounded-4xl flex-1 overflow-hidden shadow-xl">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-black mb-8 flex items-center gap-3">
-                  <span className="w-10 h-1.5 bg-blue-600 rounded-full" />
-                  Find me online
+            {/* Social Channels */}
+            <Card className="bg-card/60 dark:bg-card/40 border-black/5 dark:border-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl">
+              <CardContent className="p-0">
+                <h3 className="text-base font-black text-foreground mb-4">
+                  {t("onlinePresenceTitle")}
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {socialLinks.map((link) => (
                     <a
                       key={link.name}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-4 p-5 rounded-3xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all group"
+                      className="flex items-center gap-3 p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-blue-500/40 hover:bg-blue-500/10 transition-all group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                        <link.icon className="w-5 h-5 text-black dark:text-white group-hover:text-blue-500 transition-colors" />
+                      <div className="w-8 h-8 rounded-xl bg-card flex items-center justify-center text-foreground group-hover:text-blue-500 transition-colors shadow-xs">
+                        <link.icon className="w-4 h-4" />
                       </div>
-                      <span className="font-bold text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-blue-500 transition-colors truncate">
                         {link.name}
                       </span>
                     </a>
                   ))}
                 </div>
-
-                {profile?.whatsappUrl && (
-                  <a
-                    href={profile.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 flex items-center justify-center gap-3 p-6 rounded-3xl bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 hover:border-green-500/50 transition-all text-green-600 dark:text-green-400 font-black uppercase tracking-widest text-sm shadow-lg shadow-green-500/10"
-                  >
-                    Chat on WhatsApp
-                  </a>
-                )}
               </CardContent>
             </Card>
           </div>

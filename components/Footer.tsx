@@ -1,67 +1,80 @@
+"use client";
+
 import {
   Github,
   Linkedin,
   Twitter,
-  Instagram,
-  Facebook,
   Heart,
+  MessageCircle,
 } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 export const Footer = ({ profile }: { profile: any | null }) => {
+  const { language, dir, t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
+  const name =
+    language === "ar"
+      ? profile?.name || "أحمد قنبز"
+      : profile?.name || "Ahmed Qompoz";
+
   const socialLinks = [
-    { icon: Github, href: profile?.githubUrl, color: "hover:text-blue-400" },
+    {
+      icon: Github,
+      href: profile?.githubUrl || "https://github.com",
+      name: "GitHub",
+    },
     {
       icon: Linkedin,
-      href: profile?.linkedinUrl,
-      color: "hover:text-blue-400",
-    },
-    { icon: Twitter, href: profile?.twitterUrl, color: "hover:text-blue-400" },
-    {
-      icon: Instagram,
-      href: profile?.instagramUrl,
-      color: "hover:text-pink-400",
+      href: profile?.linkedinUrl || "https://linkedin.com",
+      name: "LinkedIn",
     },
     {
-      icon: Facebook,
-      href: profile?.facebookUrl,
-      color: "hover:text-blue-500",
+      icon: Twitter,
+      href: profile?.twitterUrl || "https://x.com",
+      name: "X (Twitter)",
     },
-  ].filter((link) => link.href);
+    {
+      icon: MessageCircle,
+      href: profile?.whatsappUrl || "https://wa.me/970592855602",
+      name: "WhatsApp",
+    },
+  ];
 
   return (
-    <footer className="py-12 border-t border-black/5 dark:border-white/5 bg-background/50 backdrop-blur-md">
+    <footer
+      dir={dir}
+      className="py-12 border-t border-black/5 dark:border-white/10 bg-background/50 backdrop-blur-md"
+    >
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo & Copyright */}
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-xs shadow-lg shadow-blue-500/20">
-                {profile?.name ? profile.name[0] : "A"}
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-xs shadow-md shadow-blue-500/20">
+                AQ
               </div>
-              <span className="font-black tracking-tighter text-lg bg-clip-text text-transparent bg-linear-to-r from-blue-600 dark:from-blue-400 to-blue-400 dark:to-white">
-                {profile?.name || "Ahmed Qompoz"}
+              <span className="font-black tracking-tight text-lg text-foreground">
+                {name}
               </span>
             </div>
-            <p className="text-sm text-muted-foreground font-medium">
-              © {currentYear} • Built with{" "}
-              <Heart className="w-3 h-3 inline text-red-500 animate-pulse" /> by{" "}
-              {profile?.name || "Ahmed Qompoz"}
+            <p className="text-xs text-muted-foreground font-medium">
+              © {currentYear} • {t("footerBuiltBy")} • {t("footerTagline")}
             </p>
           </div>
 
           {/* Social Links */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {socialLinks.map((link, i) => (
               <a
                 key={i}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-muted-foreground transition-all hover:scale-110 ${link.color} hover:border-blue-500/50 hover:text-blue-500 dark:hover:text-blue-400 shadow-sm`}
+                aria-label={link.name}
+                className="w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-muted-foreground hover:text-blue-500 hover:border-blue-500/40 flex items-center justify-center transition-all hover:scale-105 shadow-xs"
               >
-                <link.icon className="w-5 h-5" />
+                <link.icon className="w-4 h-4" />
               </a>
             ))}
           </div>

@@ -38,6 +38,7 @@ import {
   Type,
   Layout,
   Pencil,
+  Sparkles,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -79,6 +80,48 @@ export default function ProjectsPage() {
   React.useEffect(() => {
     fetchProjects();
   }, []);
+
+  const [isSeeding, setIsSeeding] = React.useState(false);
+
+  const handleSeedFlagships = async () => {
+    const confirmation = await Swal.fire({
+      title: "رفع المشاريع الرائدة لقاعدة البيانات؟",
+      text: "سيتم رفع أو تحديث المشاريع الستة (كفاءة، AACT، كنعان، أفق، أوركيد، برسكريبتو) مباشرة في قاعدة بيانات Neon PostgreSQL.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "نعم، ارفعهم للـ DB",
+      cancelButtonText: "إلغاء",
+      confirmButtonColor: "#2563eb",
+    });
+
+    if (!confirmation.isConfirmed) return;
+
+    setIsSeeding(true);
+    try {
+      const response = await fetch("/api/projects/seed", { method: "POST" });
+      const data = await response.json();
+      if (data.success) {
+        Swal.fire({
+          title: "تم الرفع بنجاح!",
+          text: `تم حفظ ${data.count} مشاريع بنجاح في قاعدة البيانات!`,
+          icon: "success",
+          confirmButtonColor: "#2563eb",
+        });
+        fetchProjects();
+      } else {
+        throw new Error(data.error || "Failed to seed projects");
+      }
+    } catch (error: any) {
+      console.error("Seed error:", error);
+      Swal.fire({
+        title: "خطأ",
+        text: error?.message || "فشل الاتصال بقاعدة البيانات",
+        icon: "error",
+      });
+    } finally {
+      setIsSeeding(false);
+    }
+  };
 
   const resetForm = () => {
     setThumbnail(undefined);
@@ -229,28 +272,21 @@ export default function ProjectsPage() {
 
   const handleDelete = async (project: any) => {
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This will delete the project and all associated media!",
+      title: "هل أنت متأكد من الحذف؟",
+      text: `سيتم حذف مشروع "${project.title}" نهائياً من قاعدة البيانات.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3b82f6",
-      cancelButtonColor: "#ef4444",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3b82f6",
+      confirmButtonText: "نعم، احذف المشروع",
+      cancelButtonText: "إلغاء",
       background: "#1a1a1a",
       color: "#fff",
     });
 
     if (result.isConfirmed) {
       try {
-        if (project.imageUrl) {
-          await edgestore.publicFiles.delete({ url: project.imageUrl });
-        }
-        if (project.gallery) {
-          const galleryUrls = JSON.parse(project.gallery);
-          for (const url of galleryUrls) {
-            await edgestore.publicFiles.delete({ url });
-          }
-        }
+        // Delete project directly from PostgreSQL database
         const response = await fetch(`/api/projects?id=${project.id}`, {
           method: "DELETE",
         });
@@ -258,19 +294,22 @@ export default function ProjectsPage() {
 
         if (res.success) {
           Swal.fire({
-            title: "Deleted!",
-            text: "Project and media have been removed.",
+            title: "تم الحذف بنجاح!",
+            text: "تمت إزالة المشروع من قاعدة البيانات وتحديث القائمة.",
             icon: "success",
             background: "#1a1a1a",
             color: "#fff",
           });
           fetchProjects();
+        } else {
+          throw new Error(res.error || "Failed to delete project from database");
         }
-      } catch (error) {
+      } catch (error: any) {
+        console.error("Delete error:", error);
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "Failed to delete project fully",
+          title: "خطأ",
+          text: error?.message || "فشل حذف المشروع",
           background: "#1a1a1a",
           color: "#fff",
         });
@@ -302,23 +341,40 @@ export default function ProjectsPage() {
           </p>
         </div>
 
-        <Dialog
-          open={isOpen}
-          onOpenChange={(open) => {
-            setIsOpen(open);
-            if (!open) resetForm();
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button
-              size="lg"
-              className="gap-2 bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/20 px-8 py-6 text-lg rounded-2xl transition-all hover:scale-105 active:scale-95"
-              onClick={() => resetForm()}
-            >
-              <Plus className="w-5 h-5" /> Add Project
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10 rounded-4xl">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            onClick={handleSeedFlagships}
+            disabled={isSeeding}
+            className="gap-2 border-blue-500/30 hover:border-blue-500 hover:bg-blue-500/10 px-6 py-6 text-base rounded-2xl transition-all"
+          >
+            {isSeeding ? (
+              <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
+            ) : (
+              <Sparkles className="w-5 h-5 text-blue-500" />
+            )}
+            <span>{isSeeding ? "جارٍ الرفع للـ DB..." : "رفع المشاريع الرائدة للـ DB"}</span>
+          </Button>
+
+          <Dialog
+            open={isOpen}
+            onOpenChange={(open) => {
+              setIsOpen(open);
+              if (!open) resetForm();
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                className="gap-2 bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/20 px-8 py-6 text-lg rounded-2xl transition-all hover:scale-105 active:scale-95"
+                onClick={() => resetForm()}
+              >
+                <Plus className="w-5 h-5" /> Add Project
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10 rounded-4xl">
             <DialogHeader>
               <DialogTitle className="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-white">
                 {editingProject ? "Edit Project" : "Create New Entry"}
@@ -584,6 +640,7 @@ export default function ProjectsPage() {
             </div>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       <Card className="border-none shadow-2xl shadow-blue-500/5 overflow-hidden bg-card/40 backdrop-blur-md rounded-2xl md:rounded-3xl border border-white/5">

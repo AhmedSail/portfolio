@@ -1,8 +1,25 @@
+"use client";
+
 import Image from "next/image";
-import { ArrowDown, Github, Linkedin, Twitter, FileText } from "lucide-react";
+import {
+  ArrowDown,
+  Github,
+  Linkedin,
+  Twitter,
+  FileText,
+  Sparkles,
+  Layers,
+  ShieldCheck,
+  Server,
+  Activity,
+  ArrowRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/language-context";
 
 export const Hero = ({ profile }: { profile: any | null }) => {
+  const { language, dir, t } = useLanguage();
+
   const scrollToProjects = () => {
     document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -11,138 +28,180 @@ export const Hero = ({ profile }: { profile: any | null }) => {
     document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const name = profile?.name || "Ahmed Qompoz";
-  const title = profile?.title || "Full Stack Web developer";
-  const bio =
-    profile?.bio ||
-    "I craft beautiful, performant web applications with modern technologies. Passionate about clean code, great UX, and turning complex problems into elegant solutions.";
+  const name =
+    language === "ar"
+      ? profile?.name || "أحمد قنبز"
+      : profile?.name || "Ahmed Qompoz";
+
+  const title = t("heroTitle");
+  const bio = t("heroBio");
+
   const imageUrl =
     profile?.imageUrl ||
     "/Gemini_Generated_Image_vfoxzbvfoxzbvfox-removebg-preview-removebg-preview.png";
 
+  const stats = [
+    {
+      value: t("statPlatforms"),
+      label: t("statPlatformsLabel"),
+      icon: Layers,
+    },
+    {
+      value: t("statSectors"),
+      label: t("statSectorsLabel"),
+      icon: Server,
+    },
+    {
+      value: t("statUptime"),
+      label: t("statUptimeLabel"),
+      icon: Activity,
+    },
+    {
+      value: t("statStack"),
+      label: t("statStackLabel"),
+      icon: ShieldCheck,
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: Github,
+      href: profile?.githubUrl || "https://github.com",
+      label: "GitHub",
+    },
+    {
+      icon: Linkedin,
+      href: profile?.linkedinUrl || "https://linkedin.com",
+      label: "LinkedIn",
+    },
+    {
+      icon: Twitter,
+      href: profile?.twitterUrl || "https://x.com",
+      label: "X (Twitter)",
+    },
+    {
+      icon: FileText,
+      href: profile?.resumeUrl || "/resume.pdf",
+      label: t("resumeBtn"),
+    },
+  ];
+
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden "
+      dir={dir}
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-28 pb-16"
     >
-      {/* Dynamic Squares Background */}
+      {/* Background Glows */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-500/10 dark:bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Gradient Orbs */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow z-0" />
-      <div
-        className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-400/10 dark:bg-white/10 rounded-full blur-3xl animate-pulse-slow z-0"
-        style={{ animationDelay: "2s" }}
-      />
-
-      <div className="container mx-auto px-6 relative z-10 mt-20">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 max-w-6xl mx-auto">
-          {/* Text Content */}
-          <div className="flex-1 text-center lg:text-left">
-            {/* Available badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8 animate-fade-in backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-              <span className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-                Available for opportunities
+          {/* Main Info */}
+          <div className="flex-1 text-center lg:text-start">
+            {/* Availability Pill */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6 backdrop-blur-md">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              </span>
+              <span className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                {t("availableBadge")}
               </span>
             </div>
 
-            {/* Name with gradient */}
-            <h1
-              className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-6 animate-fade-in tracking-tighter leading-tight"
-              style={{ animationDelay: "0.1s" }}
-            >
-              Hi, I'm <br />
-              <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-blue-300 dark:to-white">
+            {/* Name & Headline */}
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-3 tracking-tighter leading-[1.1]">
+              <span className="text-muted-foreground text-2xl sm:text-3xl block font-semibold mb-1">
+                {t("heroGreeting")}
+              </span>
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-blue-500 to-indigo-400 dark:from-white dark:via-blue-200 dark:to-blue-400">
                 {name}
               </span>
             </h1>
 
-            {/* Title */}
-            <div
-              className="mb-6 sm:mb-8 animate-fade-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-muted-foreground tracking-tight">
+            {/* Role Title */}
+            <div className="inline-block mb-6">
+              <span className="px-3.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono text-sm sm:text-base font-bold border border-blue-500/20">
                 {title}
-              </h2>
+              </span>
             </div>
 
-            {/* Bio */}
-            <p
-              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8 sm:mb-10 animate-fade-in leading-relaxed font-medium opacity-80"
-              style={{ animationDelay: "0.3s" }}
-            >
+            {/* Targeted Production Bio */}
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed font-normal">
               {bio}
             </p>
 
-            {/* CTA Buttons */}
-            <div
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12 animate-fade-in w-full sm:w-auto"
-              style={{ animationDelay: "0.4s" }}
-            >
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8 w-full sm:w-auto">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-500/20 rounded-2xl px-10 h-16 text-lg font-bold transition-all hover:scale-105 active:scale-95"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-500/25 rounded-2xl px-8 h-14 text-base font-bold transition-all hover:scale-[1.02] active:scale-95"
                 onClick={scrollToProjects}
               >
-                View My Work
+                <span>{t("heroCtaProjects")}</span>
+                <ArrowRight className={`w-4 h-4 ${language === "ar" ? "rotate-180" : ""}`} />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 px-10 h-16 text-lg font-bold rounded-2xl backdrop-blur-sm transition-all hover:border-blue-500/50"
+                className="w-full sm:w-auto border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 px-8 h-14 text-base font-bold rounded-2xl backdrop-blur-sm transition-all hover:border-blue-500/40"
                 onClick={scrollToContact}
               >
-                Get In Touch
+                {t("heroCtaContact")}
               </Button>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center justify-center lg:justify-start gap-3">
+              {socialLinks.map((social, i) => (
+                <a
+                  key={i}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-11 h-11 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-blue-600/10 border border-black/5 dark:border-white/10 hover:border-blue-500/40 flex items-center justify-center transition-all group"
+                  title={social.label}
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-4 h-4 text-muted-foreground group-hover:text-blue-500 transition-colors" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Image & Music Visualizer */}
-          <div
-            className="flex-1 relative animate-fade-in"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <div className="relative w-72 h-72 md:w-96 md:h-96 mx-auto">
-              {/* Music Bars Visualizer Around Image */}
-              <div className="absolute inset-x-[-20%] bottom-[-10%] flex items-end justify-center gap-1.5 h-40 opacity-30 pointer-events-none">
-                {[...Array(25)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-1.5 rounded-full animate-music-bar bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
-                    style={{
-                      animationDelay: `${i * 0.08}s`,
-                      height: `${20 + Math.random() * 80}%`,
-                      animationDuration: `${1.5 + Math.random()}s`,
-                    }}
-                  />
-                ))}
-              </div>
+          {/* Visual Profile Avatar */}
+          <div className="flex-1 relative flex justify-center">
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
+              {/* Outer decorative ring */}
+              <div className="absolute inset-0 rounded-[2.5rem] bg-linear-to-tr from-blue-600 to-indigo-400 opacity-20 blur-xl animate-pulse" />
 
               {/* Main Image Container */}
-              <div className="relative z-10 w-full h-full rounded-[2.5rem] p-1.5 bg-linear-to-b from-blue-400/20 to-transparent dark:from-blue-400/10 backdrop-blur-sm border border-black/5 dark:border-white/10 overflow-hidden shadow-2xl group transition-all duration-700 hover:rounded-[4rem]">
-                <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="relative z-10 w-full h-full rounded-[2.5rem] p-2 bg-card/60 backdrop-blur-xl border border-black/10 dark:border-white/10 overflow-hidden shadow-2xl group transition-all duration-500 hover:border-blue-500/40">
                 <Image
                   src={imageUrl}
                   alt={name}
                   width={400}
                   height={400}
                   priority
-                  sizes="(max-width: 768px) 280px, 400px"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  sizes="(max-width: 768px) 260px, 380px"
+                  className="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105"
                   unoptimized
                 />
               </div>
 
-              {/* Float badge */}
-              <div className="absolute -top-6 -right-6 p-5 bg-card/80 dark:bg-white/5 backdrop-blur-2xl rounded-3xl border border-black/5 dark:border-white/10 shadow-2xl animate-float z-20">
-                <div className="flex flex-col items-center">
-                  <div className="text-[10px] font-black uppercase text-blue-600 dark:text-blue-400 tracking-tighter">
-                    Verified
+              {/* Floating Badge */}
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 px-4 py-3 bg-card/90 backdrop-blur-xl rounded-2xl border border-black/10 dark:border-white/10 shadow-xl z-20 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider font-semibold">
+                    Architecting
                   </div>
-                  <div className="w-10 h-0.5 bg-blue-500/30 dark:bg-blue-500/50 my-1.5 rounded-full" />
-                  <div className="text-[10px] font-black uppercase text-foreground dark:text-white tracking-widest leading-none">
-                    Developer
+                  <div className="text-xs font-black text-foreground">
+                    Production Systems
                   </div>
                 </div>
               </div>
@@ -150,40 +209,31 @@ export const Hero = ({ profile }: { profile: any | null }) => {
           </div>
         </div>
 
-        {/* Social Links Updated */}
-        <div
-          className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-16 animate-fade-in max-w-6xl mx-auto"
-          style={{ animationDelay: "0.5s" }}
-        >
-          {[
-            { icon: Github, href: profile?.githubUrl, label: "GitHub" },
-            { icon: Linkedin, href: profile?.linkedinUrl, label: "LinkedIn" },
-            { icon: Twitter, href: profile?.twitterUrl, label: "Twitter" },
-            {
-              icon: FileText,
-              href: profile?.resumeUrl,
-              label: "Resume",
-              download: true,
-            },
-          ]
-            .filter((s) => s.href)
-            .map((social, i) => (
-              <a
+        {/* STATS BAR: Requested 8 platforms, 6 sectors, reliability, clean stack */}
+        <div className="mt-16 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 sm:p-6 rounded-3xl bg-card/60 dark:bg-card/40 border border-black/5 dark:border-white/10 backdrop-blur-xl shadow-lg">
+            {stats.map((stat, i) => (
+              <div
                 key={i}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                download={social.download}
-                className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-black/3 dark:bg-white/5 hover:bg-blue-600/10 border border-black/5 dark:border-white/10 hover:border-blue-500/50 transition-all duration-700 group relative shadow-sm"
+                className="flex flex-col items-center sm:items-start text-center sm:text-start p-3 sm:p-4 rounded-2xl hover:bg-blue-500/5 transition-colors group"
               >
-                <social.icon className="w-5 h-5 text-muted-foreground group-hover:text-blue-500 transition-colors duration-500" />
-              </a>
+                <div className="flex items-center gap-2 mb-1">
+                  <stat.icon className="w-4 h-4 text-blue-500" />
+                  <span className="text-2xl sm:text-3xl font-black text-foreground tracking-tight group-hover:text-blue-500 transition-colors">
+                    {stat.value}
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm font-semibold text-muted-foreground">
+                  {stat.label}
+                </span>
+              </div>
             ))}
+          </div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
-          <ArrowDown className="w-6 h-6 text-blue-500" />
+        <div className="flex justify-center mt-12 opacity-40">
+          <ArrowDown className="w-5 h-5 text-blue-500 animate-bounce" />
         </div>
       </div>
     </section>
