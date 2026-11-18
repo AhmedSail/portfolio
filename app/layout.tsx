@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ahmedqompoz.dev"),
+  metadataBase: new URL("https://eng-ahmed-qompoz.online"),
   title: "Ahmed Qompoz | Full Stack Engineer",
   description:
     "Full Stack Engineer building production platforms with Next.js, TypeScript and PostgreSQL: ERP, cryptographic e-voting, AI tutoring, government-integrated logistics, and real-time ordering. 8 live platforms actively serving real businesses.",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ahmedqompoz.dev",
+    url: "https://eng-ahmed-qompoz.online",
     title: "Ahmed Qompoz | Full Stack Engineer",
     description:
       "Full Stack Engineer building production platforms with Next.js, TypeScript and PostgreSQL: ERP, e-voting, AI tutoring, government-integrated logistics, and real-time ordering. 8 live platforms.",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     description:
       "Full Stack Engineer building production platforms with Next.js, TypeScript and PostgreSQL. 8 production platforms live and used by real businesses.",
     images: ["/logoWhite2.png"],
-    creator: "@AhmedQompoz",
+    creator: "@ahmedqompoz",
   },
   robots: {
     index: true,

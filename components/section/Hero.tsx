@@ -28,10 +28,7 @@ export const Hero = ({ profile }: { profile: any | null }) => {
     document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const name =
-    language === "ar"
-      ? profile?.name || "أحمد قنبز"
-      : profile?.name || "Ahmed Qompoz";
+  const name = language === "ar" ? "أحمد قنبز" : "Ahmed Qompoz";
 
   const title = t("heroTitle");
   const bio = t("heroBio");
@@ -52,8 +49,8 @@ export const Hero = ({ profile }: { profile: any | null }) => {
       icon: Server,
     },
     {
-      value: t("statUptime"),
-      label: t("statUptimeLabel"),
+      value: t("statExperience"),
+      label: t("statExperienceLabel"),
       icon: Activity,
     },
     {
@@ -66,17 +63,17 @@ export const Hero = ({ profile }: { profile: any | null }) => {
   const socialLinks = [
     {
       icon: Github,
-      href: profile?.githubUrl || "https://github.com",
+      href: profile?.githubUrl || "https://github.com/AhmedSail",
       label: "GitHub",
     },
     {
       icon: Linkedin,
-      href: profile?.linkedinUrl || "https://linkedin.com",
+      href: "https://www.linkedin.com/in/ahmedqompoz",
       label: "LinkedIn",
     },
     {
       icon: Twitter,
-      href: profile?.twitterUrl || "https://x.com",
+      href: "https://x.com/ahmedqompoz",
       label: "X (Twitter)",
     },
     {

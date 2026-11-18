@@ -43,12 +43,12 @@ export const Contact = ({ profile }: { profile: any | null }) => {
       : "ahmed.qompoz@gmail.com";
 
   const cleanLinkedin =
-    profile?.linkedinUrl && profile.linkedinUrl.length > 22
-      ? profile.linkedinUrl
-      : "https://linkedin.com/in/ahmed-qompoz";
+    profile?.linkedinUrl && profile.linkedinUrl.includes("ahmedqompoz")
+      ? (profile.linkedinUrl.startsWith("http") ? profile.linkedinUrl : `https://${profile.linkedinUrl}`)
+      : "https://www.linkedin.com/in/ahmedqompoz";
 
-  const cleanTwitter = profile?.twitterUrl || "https://x.com/ahmedqompoz";
-  const cleanGithub = profile?.githubUrl || "https://github.com";
+  const cleanTwitter = "https://x.com/ahmedqompoz";
+  const cleanGithub = profile?.githubUrl || "https://github.com/AhmedSail";
   const whatsappUrl = profile?.whatsappUrl || "https://wa.me/970592855602";
 
   const socialLinks = [

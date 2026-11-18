@@ -31,107 +31,251 @@ export interface DbProject {
   createdAt?: any;
 }
 
+// Project bilingual content dictionary
+const PROJECT_TRANSLATIONS: Record<
+  string,
+  {
+    titleEn: string;
+    descEn: string;
+    impactEn?: string;
+    titleAr?: string;
+    descAr?: string;
+    impactAr?: string;
+    tags?: string[];
+    category?: string;
+  }
+> = {
+  // AACT
+  "1edf6f86-db8d-47e5-b241-280b226b7754": {
+    titleEn: "AACT | Professional Education & International Accreditation Platform",
+    descEn:
+      "Integrated educational ecosystem for graduate programs, specialized diplomas, and automated instant QR certificate validation.",
+    impactEn: "Official global accreditation & instant QR verification",
+    titleAr: "منصة الأكاديمية الأمريكية للاستشارات والتدريب (AACT)",
+    descAr:
+      "منظومة تعليمية ومهنية دولية تدمج برامج الدراسات العليا المهنية والاعتمادات مع فحص فوري للشهادات عبر الـ QR ومصحح آلي ذكي.",
+    impactAr: "اعتمادات دولية رسمية ونظام فحص فوري للشهادات بالـ QR",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "REST APIs"],
+    category: "ai",
+  },
+  // Ofuq Cafe
+  "4bd559df-b895-49d1-9e4a-1fcdcb8470a3": {
+    titleEn: "Ofuq Cafe | Real-Time Cloud POS & QR Ordering System",
+    descEn:
+      "Smart table QR ordering and cloud POS platform with live kitchen dispatching and multi-tier cashier management.",
+    impactEn: "Live kitchen sync & zero order loss during rush hours",
+    titleAr: "منظومة كافيه أفق الذكية | نقاط البيع السحابية والطلبات اللحظية",
+    descAr:
+      "منظومة سحابية لحظية لإدارة طلبات الطاولات عبر الـ QR ونقاط البيع السحابية مع مزامنة فورية للمطبخ والكاشير.",
+    impactAr: "مزامنة لحظية للطلبات وضمان عدم فقدان أي طلب وقت الذروة",
+    tags: ["Next.js", "PostgreSQL", "WebSockets", "Tailwind CSS"],
+    category: "realtime",
+  },
+  // PYSP (E-Voting)
+  "d4764bfe-69f2-44e8-a946-c5e41680d327": {
+    titleEn: "PYSP | Smart Civic Engagement & E-Voting Platform",
+    descEn:
+      "Civic participation platform featuring cryptographic ballot auditing, verified voting sessions, and multi-tier governance.",
+    impactEn: "Verifiable electoral audit trails & strict RBAC",
+    titleAr: "منصة البرلمان الشبابي الفلسطيني (PYSP) | منظومة الاقتراع والمشاركة المدنية",
+    descAr:
+      "منصة رقمية للمشاركة المدنية وإجراء الانتخابات بسجلات اقتراع مدققة ومحمية وصلاحيات انتخابية مشددة.",
+    impactAr: "سجلات اقتراع موثقة وتدقيق انتخابي غير قابل للتلاعب",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
+    category: "security",
+  },
+  // Darb (درب)
+  "07aeaeee-d016-4059-9a3e-289e7a58523b": {
+    titleEn: "Darb | Logistics Fleet Management & Gov Integration Gateway",
+    descEn:
+      "Enterprise freight management platform featuring real-time Bayan / Logisti API integration for official Waybill lifecycle and static IP proxy routing.",
+    impactEn: "Direct Bayan API integration & instant official waybills",
+    titleAr: "منصة درب لإدارة النقل واللوجستيات والتكامل الحكومي (منصة بيان)",
+    descAr:
+      "منظومة لوجستية متكاملة تتميز بربط مباشر ولحظي مع منصة بيان (الهيئة العامة للنقل) لإصدار وثائق النقل الرسمية (Waybills) وProxy Routing آمن.",
+    impactAr: "ربط حكومي مباشر مع منصة بيان وإصدار فوري لوثائق النقل",
+    tags: ["Next.js", "React", "PostgreSQL", "Drizzle ORM", "Bayan API"],
+    category: "gov",
+  },
+  // Kafa'ah (كفاءة)
+  "kafaah-platform": {
+    titleEn: "Kafa'ah | Operations & Supply Chain Management Platform",
+    descEn:
+      "Enterprise operational platform engineered for supply chain tracking, automated workflow routing, and real-time operational performance analytics.",
+    impactEn: "Automated operations dispatch & supply chain tracking",
+    titleAr: "منصة كفاءة (Kafa'ah) | منظومة إدارة العمليات وسلاسل الإمداد",
+    descAr:
+      "منظومة سحابية متطورة لإدارة العمليات التشغيلية، ومتابعة الأداء، وأتمتة مسارات العمل وتتبع سلاسل الإمداد للمؤسسات بكفاءة وموثوقية عالية.",
+    impactAr: "أتمتة العمليات التشغيلية وتتبع سلاسل الإمداد",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Operations ERP"],
+    category: "gov",
+  },
+  // Yiwu Futian
+  "860e4efd-984a-4fbd-98d3-39313ed2f279": {
+    titleEn: "Yiwu Futian Market | Multi-Vendor E-Commerce Platform",
+    descEn:
+      "Comprehensive multi-vendor e-commerce platform with dedicated merchant dashboards, inventory workflows, and localization.",
+    impactEn: "Multi-vendor catalog architecture & secure checkouts",
+    titleAr: "سوق الفوتيان | منصة تجارة إلكترونية شاملة ومتعددة المتاجر",
+    descAr:
+      "بناء وتطوير منصة تجارة إلكترونية شاملة ومتعددة المتاجر مع لوحات تحكم للبائعين، وإدارة مرنة للمخزون والطلبات.",
+    impactAr: "بنية تحتية متكاملة للمتاجر المتعددة وبوابات الدفع",
+    tags: ["Next.js", "React", "TypeScript", "Redux Toolkit", "PostgreSQL"],
+    category: "ecommerce",
+  },
+  // VEO AI
+  "1a34c58b-d383-474e-a2ba-179d21a67dd9": {
+    titleEn: "VEO AI | Modern Video & Digital Content Studio",
+    descEn:
+      "Interactive digital studio interface designed for video generation workflows, asset management, and creative tooling.",
+    impactEn: "Interactive digital studio & media asset workspace",
+    titleAr: "منصة VEO AI | استوديو إنتاج وتوليد الفيديو الرقمي",
+    descAr:
+      "استوديو تفاعلي حديث لأتمتة وتوليد محتوى الفيديو بالوسائط الذكية مع واجهة تحكم متجاوبة وإدارة الأصول الرقمية.",
+    impactAr: "واجهة استوديو عصرية لمعالجة الوسائط والأصول الرقمية",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "AI Tools"],
+    category: "ai",
+  },
+  // Orchida Digital Services
+  "0d357438-fabe-4a68-9823-b2ca3b9bd098": {
+    titleEn: "Orchida Digital Services | Enterprise Business Portal",
+    descEn:
+      "Corporate digital services portal with automated SMS/email communications, client intake flows, and high-performance UI.",
+    impactEn: "Automated SMS/Brevo notification pipelines",
+    titleAr: "منصة أوركيد للخدمات الرقمية (Orchida Digital Services)",
+    descAr:
+      "بوابة رقمية مؤسسية لتقديم الخدمات الرقمية وحلول الأعمال مع أتمتة إشعارات الرسائل (HotSMS/Brevo) وتجربة مستخدم تفاعلية.",
+    impactAr: "مسارات أتمتة للإشعارات عبر Brevo و HotSMS",
+    tags: ["Next.js", "React", "PostgreSQL", "Tailwind CSS", "Framer Motion"],
+    category: "gov",
+  },
+  // Prescripto
+  "f0092f5f-6ee7-4070-9f88-e4cf5815b63e": {
+    titleEn: "Prescripto | Medical Appointment & Clinic Booking System",
+    descEn:
+      "Healthcare scheduling platform enabling patients to browse specialists, check live clinic schedules, and book appointments.",
+    impactEn: "Streamlined clinic scheduling & doctor availability",
+    titleAr: "منظومة بريسكريبتو (Prescripto) | حجز وإدارة المواعيد الطبية",
+    descAr:
+      "منظومة رقمية متخصصة لحجز وإدارة مواعيد العيادات الطبية، مع استعراض تخصصات الأطباء وجداول التوفر المباشرة للمرضى.",
+    impactAr: "إدارة مبسطة لحجوزات العيادات وجداول الأطباء",
+    tags: ["React", "Tailwind CSS", "Context API", "REST APIs"],
+    category: "security",
+  },
+  // E-Shop
+  "810502da-057b-45df-be2f-93e85cf43997": {
+    titleEn: "Modern E-Commerce Storefront",
+    descEn:
+      "Responsive online storefront featuring custom color theming, component-based catalog architecture, and fluid shopping cart state.",
+    titleAr: "متجر إلكتروني متكامل (E-Commerce Storefront)",
+    descAr:
+      "متجر إلكتروني تفاعلي متجاوب مبني بهندسة المكونات المعيارية مع إدارة حالة سلة المشتريات وتنسيق عصري.",
+    tags: ["React", "Tailwind CSS", "JavaScript ES6+", "State Management"],
+    category: "ecommerce",
+  },
+  // Meeting website
+  "f7c2dd22-4147-4989-917a-b5dea9efad5e": {
+    titleEn: "Web-Based Video Meeting Platform",
+    descEn:
+      "Real-time virtual video conferencing web client integrating ZegoCloud SDK for responsive, peer-to-peer visual communication.",
+    titleAr: "منصة الاجتماعات المرئية (Meeting Platform)",
+    descAr:
+      "تطبيق ويب للاجتماعات المرئية التفاعلية مع تكامل واجهة ZegoCloud لتوفير اتصال صوتي ومرئي سلس داخل المتصفح.",
+    tags: ["React", "Tailwind CSS", "ZegoCloud API", "WebRTC"],
+    category: "realtime",
+  },
+  // Mero Shop
+  "7f69fadf-7e31-4f8b-91cf-00257dc77014": {
+    titleEn: "Mero Shop E-Commerce Platform",
+    descEn:
+      "Front-end e-commerce application integrating OAuth social logins, toast notification systems, and Redux global state management.",
+    titleAr: "متجر ميرو شوب (Mero Shop)",
+    descAr:
+      "تطبيق متجر إلكتروني يدمج تسجيل الدخول بحسابات التواصل، ونظام إشعارات تفاعلي مع إدارة الحالة عبر Redux.",
+    tags: ["React", "Tailwind CSS", "Redux", "OAuth"],
+    category: "ecommerce",
+  },
+  // Inventory Management
+  "fc6807b6-7f27-44e4-80f3-d3c970d09277": {
+    titleEn: "Cloud Inventory Management System",
+    descEn:
+      "Full-stack inventory tracking dashboard built with Next.js, Shadcn/UI, and serverless PostgreSQL database.",
+    titleAr: "نظام إدارة المخزون السحابي (Inventory Management)",
+    descAr:
+      "لوحة تحكم سحابية لإدارة المخزون وتتبع المنتجات بدقة بالاعتماد على Next.js ومكونات Shadcn/UI وقاعدة بيانات بوستجريس سحابية.",
+    tags: ["Next.js", "PostgreSQL", "Tailwind CSS", "Shadcn UI"],
+    category: "security",
+  },
+};
+
 export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
   const { language, dir, t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
-  // Helper to determine the category of any DB project dynamically
+  // Filter out portfolio self-project
+  const publicProjects = projects.filter((p) => {
+    if (p.id === "3d8b9055-f691-4115-82e7-433d38afff34") return false;
+    const lower = (p.title || "").toLowerCase();
+    return !lower.includes("بورتفوليو") && !lower.includes("portfolio");
+  });
+
+  // Helper to determine category dynamically
   const getProjectCategory = (p: DbProject): string => {
+    if (PROJECT_TRANSLATIONS[p.id]?.category) {
+      return PROJECT_TRANSLATIONS[p.id].category!;
+    }
     const combined = `${p.title} ${p.tags || ""} ${p.description || ""}`.toLowerCase();
-    if (
-      combined.includes("real-time") ||
-      combined.includes("realtime") ||
-      combined.includes("pos") ||
-      combined.includes("لحظي") ||
-      combined.includes("أفق") ||
-      combined.includes("ofuq")
-    ) {
+    if (combined.includes("pos") || combined.includes("أفق") || combined.includes("ufuq")) {
       return "realtime";
     }
-    if (
-      combined.includes("gov") ||
-      combined.includes("logistics") ||
-      combined.includes("حكومي") ||
-      combined.includes("لوجست") ||
-      combined.includes("كفاءة") ||
-      combined.includes("kafa")
-    ) {
+    if (combined.includes("logistics") || combined.includes("لوجست") || combined.includes("كفاءة") || combined.includes("بيان")) {
       return "gov";
     }
-    if (
-      combined.includes("ai") ||
-      combined.includes("edtech") ||
-      combined.includes("ذكاء") ||
-      combined.includes("تعليم") ||
-      combined.includes("orchida") ||
-      combined.includes("أوركيد")
-    ) {
+    if (combined.includes("veo") || combined.includes("aact") || combined.includes("ذكاء")) {
       return "ai";
     }
-    if (
-      combined.includes("security") ||
-      combined.includes("voting") ||
-      combined.includes("تصويت") ||
-      combined.includes("أمان") ||
-      combined.includes("aact") ||
-      combined.includes("crypto") ||
-      combined.includes("healthcare") ||
-      combined.includes("clinic") ||
-      combined.includes("prescripto") ||
-      combined.includes("طبي")
-    ) {
+    if (combined.includes("voting") || combined.includes("تصويت") || combined.includes("prescripto") || combined.includes("طبي")) {
       return "security";
     }
-    if (
-      combined.includes("estate") ||
-      combined.includes("عقار") ||
-      combined.includes("canaan") ||
-      combined.includes("كنعان")
-    ) {
-      return "realestate";
-    }
-    return "general";
+    return "ecommerce";
   };
 
-  // Helper to parse description and extract (Short description + Impact metric)
+  // Helper to parse description, title and impact
   const parseProjectContent = (p: DbProject) => {
-    // 1. Clean Title (shorten if contains long legacy separators like '|')
-    const cleanTitle = p.title.includes("|")
-      ? p.title.split("|")[0].trim()
-      : p.title;
+    const translation = PROJECT_TRANSLATIONS[p.id];
 
-    // 2. Parse Description and Impact badge
-    let shortDesc = p.description || "";
+    let cleanTitle = p.title.includes("|") ? p.title.split("|")[0].trim() : p.title;
+    let shortDesc = p.description ? p.description.split("|")[0].trim() : "";
     let impactBadge: string | null = null;
 
-    if (p.description && p.description.includes("|")) {
-      const parts = p.description.split("|");
-      shortDesc = parts[0].trim();
-      impactBadge = parts[1].trim();
-    } else {
-      // Default fallback outcome if not explicitly delimited
-      const cat = getProjectCategory(p);
-      if (cat === "realtime") {
-        impactBadge = language === "ar" ? "⚡ زمن استجابة لحظي <150ms" : "⚡ <150ms real-time latency";
-      } else if (cat === "gov") {
-        impactBadge = language === "ar" ? "🏢 تكامل حكومي موثق بـ HMAC" : "🏢 HMAC-verified gov integration";
-      } else if (cat === "security") {
-        impactBadge = language === "ar" ? "🔒 سجل تدقيق غير قابل للتلاعب" : "🔒 Tamper-proof audit logs";
-      } else if (cat === "ai") {
-        impactBadge = language === "ar" ? "🧠 استجابات ذكية في أقل من 1.2s" : "🧠 <1.2s dynamic AI responses";
+    if (translation) {
+      if (language === "en") {
+        cleanTitle = translation.titleEn;
+        shortDesc = translation.descEn;
+        impactBadge = translation.impactEn || null;
       } else {
-        impactBadge = language === "ar" ? "✓ بيئة إنتاجية معتمدة" : "✓ Production verified platform";
+        cleanTitle = translation.titleAr || cleanTitle;
+        shortDesc = translation.descAr || shortDesc;
+        impactBadge = translation.impactAr || null;
+      }
+    } else {
+      // For any future project: only use explicit delimiter '|' for impact; no fake defaults
+      if (p.description && p.description.includes("|")) {
+        const parts = p.description.split("|");
+        shortDesc = parts[0].trim();
+        impactBadge = parts[1].trim();
       }
     }
 
-    // 3. Clean tags (fix typos like PostegreSQL, next jsc, MogoDB)
-    const tags = (p.tags || "")
+    // Clean tags
+    const tags = (translation?.tags || (p.tags || "")
       .replace(/PostegreSQL/gi, "PostgreSQL")
       .replace(/next jsc/gi, "Next.js")
       .replace(/MogoDB/gi, "MongoDB")
       .split(",")
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0 && t.toLowerCase() !== "null");
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0 && tag.toLowerCase() !== "null")
+    ).slice(0, 4);
 
     const category = getProjectCategory(p);
 
@@ -139,7 +283,7 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
       cleanTitle,
       shortDesc,
       impactBadge,
-      tags: tags.slice(0, 4), // Keep 3-4 key technologies
+      tags,
       category,
     };
   };
@@ -154,12 +298,12 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
 
   const filteredProjects =
     activeFilter === "all"
-      ? projects
-      : projects.filter((p) => {
+      ? publicProjects
+      : publicProjects.filter((p) => {
           const cat = getProjectCategory(p);
           return (
             cat === activeFilter ||
-            (activeFilter === "security" && (cat === "security" || cat === "realestate"))
+            (activeFilter === "security" && (cat === "security" || cat === "ecommerce"))
           );
         });
 
@@ -219,8 +363,8 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
             </h3>
             <p className="text-xs text-muted-foreground">
               {language === "ar"
-                ? "يمكنك إضافة مشاريع جديدة بسهولة عبر لوحة التحكم أو تشغيل السكريبت."
-                : "You can add new projects via the admin dashboard or seed script."}
+                ? "يمكنك إضافة مشاريع جديدة بسهولة عبر لوحة التحكم."
+                : "You can add new projects via the admin dashboard."}
             </p>
           </div>
         ) : (
@@ -228,6 +372,12 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
             {filteredProjects.map((project, index) => {
               const { cleanTitle, shortDesc, impactBadge, tags, category } =
                 parseProjectContent(project);
+
+              // Only flagship production projects get featured badge
+              const isFlagshipFeatured =
+                project.featured &&
+                project.id !== "7f69fadf-7e31-4f8b-91cf-00257dc77014" && // Not Mero Shop
+                project.id !== "fc6807b6-7f27-44e4-80f3-d3c970d09277"; // Not Inventory
 
               return (
                 <Card
@@ -255,7 +405,7 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
                       <Badge className="bg-blue-600/90 backdrop-blur-md text-white border-0 px-3 py-1 rounded-xl font-bold uppercase tracking-wider text-[10px]">
                         {category}
                       </Badge>
-                      {project.featured && (
+                      {isFlagshipFeatured && (
                         <Badge className="bg-amber-500/90 backdrop-blur-md text-white border-0 px-2.5 py-1 rounded-xl font-bold text-[10px]">
                           ★ Featured
                         </Badge>
@@ -320,7 +470,7 @@ export const Projects = ({ projects = [] }: { projects: DbProject[] }) => {
                     </div>
 
                     <div>
-                      {/* Prominent Measurable Outcome / Impact Badge */}
+                      {/* Genuine Measurable Outcome / Impact Badge */}
                       {impactBadge && (
                         <div className="p-3 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 mb-4">
                           <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">

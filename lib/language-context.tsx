@@ -37,10 +37,10 @@ const translations: Record<Language, Record<string, string>> = {
     statPlatformsLabel: "Live Platforms",
     statSectors: "6",
     statSectorsLabel: "Industry Sectors",
-    statUptime: "99.9%",
-    statUptimeLabel: "System Reliability",
-    statStack: "100%",
-    statStackLabel: "Type-Safe Architectures",
+    statExperience: "3+",
+    statExperienceLabel: "Years Experience",
+    statStack: "Full-Stack",
+    statStackLabel: "Next.js & TypeScript",
 
     // Projects
     projectsBadge: "Featured Work",
@@ -118,10 +118,10 @@ const translations: Record<Language, Record<string, string>> = {
     statPlatformsLabel: "منصات إنتاجية حية",
     statSectors: "6",
     statSectorsLabel: "قطاعات أعمال مختلفة",
-    statUptime: "99.9%",
-    statUptimeLabel: "اعتمادية وتوافر عالي",
-    statStack: "100%",
-    statStackLabel: "كود آمن ونظيف تماماً",
+    statExperience: "+3",
+    statExperienceLabel: "سنوات خبرة عملية",
+    statStack: "Full-Stack",
+    statStackLabel: "تطوير شامل بـ Next.js",
 
     // Projects
     projectsBadge: "أعمال مختارة",

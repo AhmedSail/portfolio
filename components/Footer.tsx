@@ -13,25 +13,22 @@ export const Footer = ({ profile }: { profile: any | null }) => {
   const { language, dir, t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
-  const name =
-    language === "ar"
-      ? profile?.name || "أحمد قنبز"
-      : profile?.name || "Ahmed Qompoz";
+  const name = language === "ar" ? "أحمد قنبز" : "Ahmed Qompoz";
 
   const socialLinks = [
     {
       icon: Github,
-      href: profile?.githubUrl || "https://github.com",
+      href: profile?.githubUrl || "https://github.com/AhmedSail",
       name: "GitHub",
     },
     {
       icon: Linkedin,
-      href: profile?.linkedinUrl || "https://linkedin.com",
+      href: "https://www.linkedin.com/in/ahmedqompoz",
       name: "LinkedIn",
     },
     {
       icon: Twitter,
-      href: profile?.twitterUrl || "https://x.com",
+      href: "https://x.com/ahmedqompoz",
       name: "X (Twitter)",
     },
     {
